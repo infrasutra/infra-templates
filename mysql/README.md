@@ -36,10 +36,10 @@ MySQL is the world's most popular open-source relational database management sys
 The `VERSION` variable allows you to select which MySQL version to deploy. You can override it at deploy time:
 
 ```bash
-dmsctl deploy --set VERSION=8.4
+infra deploy --set VERSION=8.4
 ```
 
-Or in your `dms.yaml`:
+Or in your `infra.yaml`:
 
 ```yaml
 variables:
@@ -87,7 +87,7 @@ mysql://$MYSQL_USER:$MYSQL_PASSWORD@<service-host>:3306/$MYSQL_DATABASE
 By default, MySQL is only accessible within the cluster (internal only). To enable external access via TLSRoute:
 
 ```bash
-dmsctl deploy --template mysql --set EXPOSE_EXTERNAL=true
+infra deploy --template mysql --set EXPOSE_EXTERNAL=true
 ```
 
 When enabled, the service will be accessible at `{name}-{stage}.{domain}:3306` with TLS termination at the gateway. The gateway handles TLS encryption and forwards plain TCP to MySQL.

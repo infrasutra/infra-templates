@@ -32,10 +32,10 @@ Redis is an open-source, in-memory data structure store used as a database, cach
 The `VERSION` variable allows you to select which Redis version to deploy. You can override it at deploy time:
 
 ```bash
-dmsctl deploy --set VERSION=8
+infra deploy --set VERSION=8
 ```
 
-Or in your `dms.yaml`:
+Or in your `infra.yaml`:
 
 ```yaml
 variables:
@@ -81,7 +81,7 @@ redis://:$REDIS_PASSWORD@<service-host>:6379
 By default, Redis is only accessible within the cluster (internal only). To enable external access via TLSRoute:
 
 ```bash
-dmsctl deploy --template redis --set EXPOSE_EXTERNAL=true
+infra deploy --template redis --set EXPOSE_EXTERNAL=true
 ```
 
 When enabled, the service will be accessible at `{name}-{stage}.{domain}:6379` with TLS termination at the gateway. The gateway handles TLS encryption and forwards plain TCP to Redis.

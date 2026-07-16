@@ -37,10 +37,10 @@ PostgreSQL is a powerful, open-source object-relational database system with a s
 The `VERSION` variable allows you to select which PostgreSQL version to deploy. You can override it at deploy time:
 
 ```bash
-dmsctl deploy --set VERSION=17
+infra deploy --set VERSION=17
 ```
 
-Or in your `dms.yaml`:
+Or in your `infra.yaml`:
 
 ```yaml
 variables:
@@ -82,7 +82,7 @@ postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@<service-host>:5432/$POSTGRES_DB
 By default, PostgreSQL is only accessible within the cluster (internal only). To enable external access via TLSRoute:
 
 ```bash
-dmsctl deploy --template postgres --set EXPOSE_EXTERNAL=true
+infra deploy --template postgres --set EXPOSE_EXTERNAL=true
 ```
 
 When enabled, the service will be accessible at `{name}-{stage}.{domain}:5432` with TLS termination at the gateway. The gateway handles TLS encryption and forwards plain TCP to PostgreSQL.

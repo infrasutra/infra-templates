@@ -1,6 +1,6 @@
-# DMS Templates
+# Infrasutra Templates
 
-Official default templates for the DMS (Deployment Management Stack) platform. These templates provide pre-configured infrastructure services that can be deployed through DMS.
+Official default templates for the Infrasutra platform. These templates provide pre-configured infrastructure services that can be deployed through Infrasutra.
 
 ## Available Templates
 
@@ -12,34 +12,34 @@ Official default templates for the DMS (Deployment Management Stack) platform. T
 
 ## Usage
 
-Templates can be registered in DMS and deployed to any stage within your projects. Each template follows the DMS YAML specification v1.
+Templates can be registered in Infrasutra and deployed to any stage within your projects. Each template follows the Infrasutra YAML specification v1.
 
 ### Deploying a Template
 
 ```bash
 # Deploy with default version
-dmsctl deploy --template postgres
+infra deploy --template postgres
 
 # Deploy with specific version
-dmsctl deploy --template postgres --version 17
+infra deploy --template postgres --version 17
 
 # Deploy with custom configuration
-dmsctl deploy --template postgres --set POSTGRES_DB=myapp --set MEMORY=512
+infra deploy --template postgres --set POSTGRES_DB=myapp --set MEMORY=512
 ```
 
 ### Version Selection
 
-All templates support version selection via the `--version` flag or through the DMS UI. The version is interpolated into the container image tag using `${VERSION}`.
+All templates support version selection via the `--version` flag or through the Infrasutra UI. The version is interpolated into the container image tag using `${VERSION}`.
 
 ### Template Structure
 
 Each template directory contains:
-- `dms-template.yaml` - The DMS template specification file
+- `infra-template.yaml` - The Infrasutra template specification file
 - `README.md` - Documentation for the template including configuration options
 
 ## Template Specification
 
-All templates follow the DMS YAML v1 specification:
+All templates follow the Infrasutra YAML v1 specification:
 
 ```yaml
 version: "1"
@@ -171,7 +171,7 @@ tcp_exposure:
 
 ```bash
 # Enable external access at deploy time
-dmsctl deploy --template postgres --set EXPOSE_EXTERNAL=true
+infra deploy --template postgres --set EXPOSE_EXTERNAL=true
 ```
 
 ## Contributing
@@ -179,7 +179,7 @@ dmsctl deploy --template postgres --set EXPOSE_EXTERNAL=true
 To add a new template:
 
 1. Create a new directory with the template name
-2. Add a `dms-template.yaml` following the specification
+2. Add an `infra-template.yaml` following the specification
 3. Add a `README.md` documenting the template
 4. Submit a pull request
 

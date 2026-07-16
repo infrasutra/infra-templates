@@ -28,7 +28,7 @@ services:
       - port: 9042
     env:
       - key: CASSANDRA_CLUSTER_NAME
-        default: DMS Cluster
+        default: Infrasutra Cluster
         configurable: true
         description: Cassandra cluster name
       - key: CASSANDRA_DC

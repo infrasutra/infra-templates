@@ -37,7 +37,7 @@ services:
         generator: password
         description: InfluxDB admin password
       - key: DOCKER_INFLUXDB_INIT_ORG
-        default: dms
+        default: infrasutra
         configurable: true
         description: InfluxDB organization name
       - key: DOCKER_INFLUXDB_INIT_BUCKET
