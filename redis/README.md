@@ -24,23 +24,20 @@ Redis is an open-source, in-memory data structure store used as a database, cach
 | Variable | Type | Required | Default | Description |
 |----------|------|----------|---------|-------------|
 | `VERSION` | string | No | `7` | Redis version to deploy |
-| `EXPOSE_EXTERNAL` | boolean | No | `false` | Enable external access via TLSRoute |
 | `REDIS_PASSWORD` | secret | Yes | (auto-generated) | Redis authentication password |
 
 ## Version Override
 
-The `VERSION` variable allows you to select which Redis version to deploy. You can override it at deploy time:
-
-```bash
-infra deploy --set VERSION=8
-```
-
-Or in your `infra.yaml`:
+The `VERSION` variable selects the Redis image version. CLI deployment uses `defaultVersion`; select another version in the Infrasutra UI or change the default in a customized `infra-template.yaml` before syncing:
 
 ```yaml
-variables:
-  - key: VERSION
-    default: "8"
+defaultVersion: "7"
+```
+
+Then deploy the published template:
+
+```bash
+infra templates deploy redis
 ```
 
 ## Storage
@@ -78,10 +75,15 @@ redis://:$REDIS_PASSWORD@<service-host>:6379
 
 ## External Access
 
-By default, Redis is only accessible within the cluster (internal only). To enable external access via TLSRoute:
+By default, Redis is only accessible within the cluster. In a customized `infra-template.yaml`, set `tcp_exposure.enabled` to `true`, sync the template, and deploy it:
+
+```yaml
+tcp_exposure:
+  enabled: true
+```
 
 ```bash
-infra deploy --template redis --set EXPOSE_EXTERNAL=true
+infra templates deploy redis
 ```
 
 When enabled, the service will be accessible at `{name}-{stage}.{domain}:6379` with TLS termination at the gateway. The gateway handles TLS encryption and forwards plain TCP to Redis.

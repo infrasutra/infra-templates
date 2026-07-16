@@ -27,25 +27,22 @@ PostgreSQL is a powerful, open-source object-relational database system with a s
 | Variable | Type | Required | Default | Description |
 |----------|------|----------|---------|-------------|
 | `VERSION` | string | No | `16` | PostgreSQL version to deploy |
-| `EXPOSE_EXTERNAL` | boolean | No | `false` | Enable external access via TLSRoute |
 | `POSTGRES_USER` | string | No | `postgres` | PostgreSQL superuser username |
 | `POSTGRES_PASSWORD` | secret | Yes | (auto-generated) | PostgreSQL superuser password |
 | `POSTGRES_DB` | string | No | `postgres` | Default database name to create |
 
 ## Version Override
 
-The `VERSION` variable allows you to select which PostgreSQL version to deploy. You can override it at deploy time:
-
-```bash
-infra deploy --set VERSION=17
-```
-
-Or in your `infra.yaml`:
+The `VERSION` variable selects the PostgreSQL image version. CLI deployment uses `defaultVersion`; select another version in the Infrasutra UI or change the default in a customized `infra-template.yaml` before syncing:
 
 ```yaml
-variables:
-  - key: VERSION
-    default: "17"
+defaultVersion: "17"
+```
+
+Then deploy the published template:
+
+```bash
+infra templates deploy postgres
 ```
 
 ## Storage
@@ -79,10 +76,15 @@ postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@<service-host>:5432/$POSTGRES_DB
 
 ## External Access
 
-By default, PostgreSQL is only accessible within the cluster (internal only). To enable external access via TLSRoute:
+By default, PostgreSQL is only accessible within the cluster. In a customized `infra-template.yaml`, set `tcp_exposure.enabled` to `true`, sync the template, and deploy it:
+
+```yaml
+tcp_exposure:
+  enabled: true
+```
 
 ```bash
-infra deploy --template postgres --set EXPOSE_EXTERNAL=true
+infra templates deploy postgres
 ```
 
 When enabled, the service will be accessible at `{name}-{stage}.{domain}:5432` with TLS termination at the gateway. The gateway handles TLS encryption and forwards plain TCP to PostgreSQL.
