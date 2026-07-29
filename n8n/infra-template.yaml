@@ -22,7 +22,7 @@ defaultVersion: "2.28.2"
 services:
   - name: n8n
     type: web
-    image: "n8nio/n8n:${VERSION}.0"
+    image: "n8nio/n8n:${VERSION}"
     ports:
       - port: 5678
     env:
