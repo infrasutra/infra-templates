@@ -38,6 +38,9 @@ services:
         default: app
         configurable: true
         description: Default database name to create
+      - key: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+        description: Data directory; a subdirectory of the mounted volume so initdb does not see lost+found
     volumes:
       - name: timescaledb-data
         path: /var/lib/postgresql/data
