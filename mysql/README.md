@@ -24,7 +24,7 @@ MySQL is the world's most popular open-source relational database management sys
 
 | Variable | Type | Required | Default | Description |
 |----------|------|----------|---------|-------------|
-| `VERSION` | string | No | `8.0` | MySQL version to deploy |
+| `VERSION` | string | No | `9` | MySQL version to deploy |
 | `MYSQL_ROOT_PASSWORD` | secret | Yes | (auto-generated) | MySQL root user password |
 | `MYSQL_USER` | string | No | `app` | MySQL application user username |
 | `MYSQL_PASSWORD` | secret | Yes | (auto-generated) | MySQL application user password |

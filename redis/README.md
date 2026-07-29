@@ -23,7 +23,7 @@ Redis is an open-source, in-memory data structure store used as a database, cach
 
 | Variable | Type | Required | Default | Description |
 |----------|------|----------|---------|-------------|
-| `VERSION` | string | No | `7` | Redis version to deploy |
+| `VERSION` | string | No | `8` | Redis version to deploy |
 | `REDIS_PASSWORD` | secret | Yes | (auto-generated) | Redis authentication password |
 
 ## Version Override

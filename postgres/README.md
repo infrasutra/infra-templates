@@ -26,7 +26,7 @@ PostgreSQL is a powerful, open-source object-relational database system with a s
 
 | Variable | Type | Required | Default | Description |
 |----------|------|----------|---------|-------------|
-| `VERSION` | string | No | `16` | PostgreSQL version to deploy |
+| `VERSION` | string | No | `18` | PostgreSQL version to deploy |
 | `POSTGRES_USER` | string | No | `postgres` | PostgreSQL superuser username |
 | `POSTGRES_PASSWORD` | secret | Yes | (auto-generated) | PostgreSQL superuser password |
 | `POSTGRES_DB` | string | No | `postgres` | Default database name to create |
