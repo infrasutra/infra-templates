@@ -23,7 +23,7 @@ defaultVersion: "13.1.0"
 services:
   - name: grafana
     type: web
-    image: "grafana/grafana:${VERSION}.0"
+    image: "grafana/grafana:${VERSION}"
     ports:
       - port: 3000
     env:

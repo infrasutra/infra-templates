@@ -22,7 +22,7 @@ defaultVersion: "8.3.0"
 services:
   - name: kafka
     type: worker
-    image: "confluentinc/cp-kafka:${VERSION}.0"
+    image: "confluentinc/cp-kafka:${VERSION}"
     ports:
       - port: 9092
       - port: 9093
