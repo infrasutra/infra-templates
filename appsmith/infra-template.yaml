@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: appsmith
 description: Appsmith is an open-source platform for building internal tools and admin panels with a drag-and-drop interface and 45+ database/API integrations.
-icon: https://raw.githubusercontent.com/appsmithorg/appsmith/release/app/client/src/assets/images/appsmith_logo.svg
+icon: https://raw.githubusercontent.com/appsmithorg/appsmith/release/static/logo.png
 category: lowcode
 tags:
   - lowcode

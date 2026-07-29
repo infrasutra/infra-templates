@@ -2,7 +2,7 @@ version: "1"
 
 name: dragonfly
 description: Dragonfly is a modern in-memory datastore that is fully compatible with Redis and Memcached APIs. It delivers 25x more throughput and higher cache hit rates with a multi-threaded, shared-nothing architecture.
-icon: https://www.dragonflydb.io/dragonfly-vertical.svg
+icon: https://raw.githubusercontent.com/dragonflydb/dragonfly/main/.github/images/logo-full.svg
 category: cache
 tags:
   - cache

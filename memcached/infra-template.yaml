@@ -2,7 +2,7 @@ version: "1"
 
 name: memcached
 description: Memcached is a high-performance, distributed memory object caching system intended for speeding up dynamic web applications by reducing database load.
-icon: https://raw.githubusercontent.com/docker-library/docs/master/memcached/logo.png
+icon: https://avatars.githubusercontent.com/u/41836?s=200&v=4
 category: cache
 tags:
   - cache

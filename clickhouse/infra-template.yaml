@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: clickhouse
 description: ClickHouse is a fast, open-source columnar database management system designed for online analytical processing (OLAP) with exceptional query performance.
-icon: https://clickhouse.com/images/ch_logo.svg
+icon: https://avatars.githubusercontent.com/u/54801242?s=200&v=4
 category: analytics
 tags:
   - database

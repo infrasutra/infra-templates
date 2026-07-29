@@ -6,9 +6,9 @@ Official default templates for the Infrasutra platform. These templates provide 
 
 | Template | Description | Versions | Default |
 |----------|-------------|----------|---------|
-| [PostgreSQL](./postgres/) | PostgreSQL database with Alpine Linux | 14, 15, 16, 17 | 16 |
-| [Redis](./redis/) | Redis in-memory data store with AOF persistence | 6.2, 7.2, 7.4 | 7.2 |
-| [MySQL](./mysql/) | MySQL relational database | 5.7, 8.0, 8.4 | 8.0 |
+| [PostgreSQL](./postgres/) | PostgreSQL database with Alpine Linux | 16, 17, 18 | 18 |
+| [Redis](./redis/) | Redis in-memory data store with AOF persistence | 6, 7, 8 | 8 |
+| [MySQL](./mysql/) | MySQL relational database | 5.7, 8, 9 | 9 |
 
 ## Usage
 
@@ -17,19 +17,19 @@ Templates can be registered in Infrasutra and deployed to any stage within your 
 ### Deploying a Template
 
 ```bash
-# Deploy with default version
-infra deploy --template postgres
+# Deploy with the default configuration
+infra templates deploy postgres
 
-# Deploy with specific version
-infra deploy --template postgres --version 17
+# Deploy another marketplace template
+infra templates deploy redis
 
-# Deploy with custom configuration
-infra deploy --template postgres --set POSTGRES_DB=myapp --set MEMORY=512
+# Deploy without following build logs
+infra templates deploy postgres --watch=false
 ```
 
 ### Version Selection
 
-All templates support version selection via the `--version` flag or through the Infrasutra UI. The version is interpolated into the container image tag using `${VERSION}`.
+Templates publish their supported versions to the Infrasutra UI. CLI deployment uses the template's `defaultVersion`; change `defaultVersion` in a customized template before syncing when a different default is required. The selected version is interpolated into the container image tag using `${VERSION}`.
 
 ### Template Structure
 
@@ -106,7 +106,7 @@ The `VERSION` variable is automatically available based on the `versions` array:
 
 - Defined in `versions` array at the spec level
 - Default specified by `defaultVersion`
-- Can be overridden at deploy time via `--version`
+- Selected in the Infrasutra UI or changed through `defaultVersion` before template sync
 - Used in image tags via `${VERSION}` interpolation
 
 ### Variable Types
@@ -150,7 +150,7 @@ Database and cache templates support optional external access via Gateway API TL
 
 ```yaml
 tcp_exposure:
-  enabled: ${EXPOSE_EXTERNAL}
+  enabled: false
   hostname: "${NAME}-${STAGE}.${DOMAIN}"
   port: 5432
   tls:
@@ -170,8 +170,11 @@ tcp_exposure:
 **Enabling External Access:**
 
 ```bash
-# Enable external access at deploy time
-infra deploy --template postgres --set EXPOSE_EXTERNAL=true
+# Inspect the template before deployment
+infra templates get postgres
+
+# Deploy after configuring external access in a customized template
+infra templates deploy postgres
 ```
 
 ## Contributing

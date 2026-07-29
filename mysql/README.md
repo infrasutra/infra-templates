@@ -24,8 +24,7 @@ MySQL is the world's most popular open-source relational database management sys
 
 | Variable | Type | Required | Default | Description |
 |----------|------|----------|---------|-------------|
-| `VERSION` | string | No | `8.0` | MySQL version to deploy |
-| `EXPOSE_EXTERNAL` | boolean | No | `false` | Enable external access via TLSRoute |
+| `VERSION` | string | No | `9` | MySQL version to deploy |
 | `MYSQL_ROOT_PASSWORD` | secret | Yes | (auto-generated) | MySQL root user password |
 | `MYSQL_USER` | string | No | `app` | MySQL application user username |
 | `MYSQL_PASSWORD` | secret | Yes | (auto-generated) | MySQL application user password |
@@ -33,18 +32,16 @@ MySQL is the world's most popular open-source relational database management sys
 
 ## Version Override
 
-The `VERSION` variable allows you to select which MySQL version to deploy. You can override it at deploy time:
-
-```bash
-infra deploy --set VERSION=8.4
-```
-
-Or in your `infra.yaml`:
+The `VERSION` variable selects the MySQL image version. CLI deployment uses `defaultVersion`; select another version in the Infrasutra UI or change the default in a customized `infra-template.yaml` before syncing:
 
 ```yaml
-variables:
-  - key: VERSION
-    default: "8.4"
+defaultVersion: "8"
+```
+
+Then deploy the published template:
+
+```bash
+infra templates deploy mysql
 ```
 
 ## Storage
@@ -84,10 +81,15 @@ mysql://$MYSQL_USER:$MYSQL_PASSWORD@<service-host>:3306/$MYSQL_DATABASE
 
 ## External Access
 
-By default, MySQL is only accessible within the cluster (internal only). To enable external access via TLSRoute:
+By default, MySQL is only accessible within the cluster. In a customized `infra-template.yaml`, set `tcp_exposure.enabled` to `true`, sync the template, and deploy it:
+
+```yaml
+tcp_exposure:
+  enabled: true
+```
 
 ```bash
-infra deploy --template mysql --set EXPOSE_EXTERNAL=true
+infra templates deploy mysql
 ```
 
 When enabled, the service will be accessible at `{name}-{stage}.{domain}:3306` with TLS termination at the gateway. The gateway handles TLS encryption and forwards plain TCP to MySQL.

@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: typesense
 description: Typesense is a fast, typo-tolerant, open-source search engine optimised for instant search-as-you-type experiences. It provides a simple REST API with great developer experience and predictable, low-latency performance.
-icon: https://typesense.org/images/typesense_logo.svg
+icon: https://avatars.githubusercontent.com/u/19822348?s=200&v=4
 category: search
 tags:
   - search

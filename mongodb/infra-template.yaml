@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: mongodb
 description: MongoDB is a popular NoSQL document database known for its flexibility, scalability, and powerful query capabilities for modern applications.
-icon: https://raw.githubusercontent.com/docker-library/docs/master/mongo/logo.png
+icon: https://avatars.githubusercontent.com/u/45120?s=200&v=4
 category: database
 tags:
   - database

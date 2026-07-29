@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: gitlab
 description: GitLab is a complete DevOps platform delivered as a single application, providing source code management, CI/CD, security testing, and project management.
-icon: https://about.gitlab.com/images/press/press-kit-icon.svg
+icon: https://avatars.githubusercontent.com/u/1086321?s=200&v=4
 category: devops
 tags:
   - git

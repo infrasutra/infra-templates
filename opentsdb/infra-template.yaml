@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: opentsdb
 description: OpenTSDB is a scalable, distributed time series database built on top of HBase, designed for storing and querying massive amounts of metrics data.
-icon: https://opentsdb.net/img/logo.svg
+icon: https://avatars.githubusercontent.com/u/2086220?s=200&v=4
 category: time-series
 tags:
   - database

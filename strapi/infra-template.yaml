@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: strapi
 description: Strapi is the leading open-source headless CMS, providing a customizable API and an intuitive admin panel for managing content.
-icon: https://raw.githubusercontent.com/strapi/strapi/main/packages/strapi-design-system/assets/logo.svg
+icon: https://raw.githubusercontent.com/strapi/strapi/develop/docs/static/img/logo.svg
 category: cms
 tags:
   - cms

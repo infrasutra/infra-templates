@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: n8n
 description: n8n is a powerful workflow automation tool that lets you connect apps and automate tasks, offering a self-hosted alternative to Zapier with 200+ integrations.
-icon: https://raw.githubusercontent.com/n8n-io/n8n/master/packages/design-system/src/assets/n8n-icon.svg
+icon: https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png
 category: automation
 tags:
   - automation

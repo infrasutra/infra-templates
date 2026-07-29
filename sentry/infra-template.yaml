@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: sentry
 description: Sentry is an error tracking and performance monitoring platform that helps developers discover, triage, and prioritize errors in real-time.
-icon: https://raw.githubusercontent.com/getsentry/sentry/master/src/sentry/static/sentry/images/sentry-avatar.png
+icon: https://avatars.githubusercontent.com/u/1396951?s=200&v=4
 category: monitoring
 tags:
   - monitoring

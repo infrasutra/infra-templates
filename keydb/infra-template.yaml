@@ -2,6 +2,7 @@ version: "1"
 
 name: keydb
 description: KeyDB is a high-performance fork of Redis with a focus on multithreading, memory efficiency, and active-active replication. It is fully compatible with the Redis protocol.
+icon: https://docs.keydb.dev/img/logo.svg
 category: cache
 tags:
   - cache

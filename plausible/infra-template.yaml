@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: plausible
 description: Plausible Analytics is a lightweight, privacy-friendly web analytics tool that doesn't use cookies and is fully GDPR compliant.
-icon: https://raw.githubusercontent.com/plausible/analytics/master/assets/static/images/icon/plausible_logo.svg
+icon: https://raw.githubusercontent.com/plausible/analytics/master/priv/static/images/ce/logo_dark.svg
 category: analytics
 tags:
   - analytics

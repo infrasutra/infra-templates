@@ -2,7 +2,7 @@ version: "1"
 
 name: etcd
 description: etcd is a distributed, reliable key-value store for the most critical data of a distributed system. It is the backbone of Kubernetes and many cloud-native projects.
-icon: https://etcd.io/img/etcd-horizontal-color.svg
+icon: https://raw.githubusercontent.com/etcd-io/etcd/main/logos/etcd-glyph-color.svg
 category: database
 tags:
   - database

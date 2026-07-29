@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: mssql
 description: Microsoft SQL Server is a relational database management system developed by Microsoft, offering enterprise-grade performance, security, and business intelligence capabilities.
-icon: https://raw.githubusercontent.com/docker-library/docs/master/microsoft-sql-server/logo.png
+icon: https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/svg/microsoft-sql-server.svg
 category: database
 tags:
   - database

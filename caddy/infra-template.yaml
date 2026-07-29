@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: caddy
 description: Caddy is a powerful, enterprise-ready web server with automatic HTTPS, serving static files, reverse proxying, and load balancing out of the box.
-icon: https://caddyserver.com/resources/images/caddy-logo.svg
+icon: https://raw.githubusercontent.com/caddyserver/website/master/src/resources/images/icon-transparent.png
 category: proxy
 tags:
   - proxy

@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: drone
 description: Drone is a container-native, self-service Continuous Integration platform for busy development teams, with simple YAML-based pipeline configuration.
-icon: https://raw.githubusercontent.com/drone/brand/master/logos/png/drone-logo-png-black.png
+icon: https://avatars.githubusercontent.com/u/2181346?s=200&v=4
 category: devops
 tags:
   - cicd

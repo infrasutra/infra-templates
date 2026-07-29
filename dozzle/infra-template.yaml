@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: dozzle
 description: Dozzle is a real-time log viewer for Docker containers with a web-based interface, providing instant access to container logs without storing data.
-icon: https://raw.githubusercontent.com/amir20/dozzle/master/.github/dozzle.png
+icon: https://raw.githubusercontent.com/amir20/dozzle/master/assets/logo.svg
 category: container-mgmt
 tags:
   - containers

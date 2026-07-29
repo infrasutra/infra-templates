@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: outline
 description: Outline is a fast, collaborative team knowledge base with markdown support, real-time editing, and integrations with Slack, Figma, and more.
-icon: https://raw.githubusercontent.com/outline/outline/main/public/images/logo.svg
+icon: https://raw.githubusercontent.com/outline/outline/main/public/logos/outline-logo-dark.png
 category: wiki
 tags:
   - wiki

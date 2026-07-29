@@ -2,7 +2,7 @@ version: "1"
 
 name: valkey
 description: Valkey is an open-source, high-performance key-value store forked from Redis. It is a drop-in replacement for Redis with full protocol compatibility and active community development.
-icon: https://valkey.io/assets/img/valkey-horizontal-color-logo.svg
+icon: https://raw.githubusercontent.com/valkey-io/valkey-io.github.io/main/static/img/Valkey-logo.svg
 category: cache
 tags:
   - cache
