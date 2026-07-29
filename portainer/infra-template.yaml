@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: portainer
 description: Portainer is a lightweight container management UI that allows you to easily manage Docker, Swarm, and Kubernetes environments through a web interface.
-icon: https://raw.githubusercontent.com/portainer/portainer/develop/public/images/logo_alt.png
+icon: https://raw.githubusercontent.com/portainer/portainer/develop/app/assets/ico/apple-touch-icon.png
 category: container-mgmt
 tags:
   - containers

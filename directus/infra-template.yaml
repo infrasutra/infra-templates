@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: directus
 description: Directus is an instant REST and GraphQL API for any SQL database, with an intuitive admin interface for managing content and users.
-icon: https://raw.githubusercontent.com/directus/directus/main/packages/app/src/assets/logo.svg
+icon: https://raw.githubusercontent.com/directus/directus/main/app/src/assets/logo.svg
 category: cms
 tags:
   - cms

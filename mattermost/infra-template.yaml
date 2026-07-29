@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: mattermost
 description: Mattermost is an open-source, self-hosted team collaboration platform offering messaging, file sharing, and integrations as a Slack alternative.
-icon: https://raw.githubusercontent.com/mattermost/mattermost-webapp/master/images/icon.png
+icon: https://avatars.githubusercontent.com/u/9828093?s=200&v=4
 category: communication
 tags:
   - communication

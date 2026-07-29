@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: superset
 description: Apache Superset is a modern data exploration and visualization platform, offering a rich set of charts, SQL editor, and semantic layer for business intelligence.
-icon: https://raw.githubusercontent.com/apache/superset/master/superset-frontend/src/assets/images/superset-logo-horiz.svg
+icon: https://raw.githubusercontent.com/apache/superset/master/superset-frontend/src/assets/branding/superset-logo-horiz.svg
 category: analytics
 tags:
   - analytics

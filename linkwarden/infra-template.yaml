@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: linkwarden
 description: Linkwarden is a self-hosted bookmark manager to collect, organize, and preserve webpages with automatic archiving, tagging, and collaboration features.
-icon: https://raw.githubusercontent.com/linkwarden/linkwarden/main/public/logo.png
+icon: https://raw.githubusercontent.com/linkwarden/linkwarden/main/assets/logo.png
 category: bookmarks
 tags:
   - bookmarks

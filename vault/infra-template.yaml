@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: vault
 description: HashiCorp Vault is a tool for securely storing and accessing secrets, providing encryption, identity-based access, and detailed audit logs.
-icon: https://raw.githubusercontent.com/hashicorp/vault/main/ui/public/vault-logo.svg
+icon: https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/svg/vault.svg
 category: security
 tags:
   - secrets

@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: authentik
 description: authentik is an open-source identity provider offering SSO, MFA, user management, and application proxying with support for SAML, OAuth2, and LDAP.
-icon: https://raw.githubusercontent.com/goauthentik/authentik/main/web/icons/icon.svg
+icon: https://goauthentik.io/img/icon.png
 category: security
 tags:
   - security

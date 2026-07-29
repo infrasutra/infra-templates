@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: neo4j
 description: Neo4j is a highly scalable native graph database that enables powerful querying and analysis of connected data through its Cypher query language.
-icon: https://neo4j.com/wp-content/uploads/neo4j_logo.svg
+icon: https://avatars.githubusercontent.com/u/201120?s=200&v=4
 category: graph
 tags:
   - database

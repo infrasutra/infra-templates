@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: qdrant
 description: Qdrant is a high-performance, production-ready vector database and vector similarity search engine. It provides a production-ready service with a convenient API for storing, searching, and managing points with an additional payload.
-icon: https://raw.githubusercontent.com/qdrant/qdrant/master/docs/logo.png
+icon: https://raw.githubusercontent.com/qdrant/qdrant/master/docs/logo.svg
 category: database
 tags:
   - database

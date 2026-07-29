@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: jaeger
 description: Jaeger is a distributed tracing platform used for monitoring and troubleshooting microservices-based distributed systems, providing end-to-end observability.
-icon: https://raw.githubusercontent.com/jaegertracing/jaeger/main/model/proto/static/jaeger-logo.png
+icon: https://avatars.githubusercontent.com/u/28545596?s=200&v=4
 category: monitoring
 tags:
   - tracing

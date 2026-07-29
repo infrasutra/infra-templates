@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: opensearch
 description: OpenSearch is a community-driven, open-source search and analytics suite derived from Elasticsearch, offering powerful full-text search and log analytics capabilities.
-icon: https://opensearch.org/assets/brand/PNG/Logo/opensearch_logo_default.png
+icon: https://avatars.githubusercontent.com/u/80134844?s=200&v=4
 category: search
 tags:
   - database

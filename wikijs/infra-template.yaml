@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: wikijs
 description: Wiki.js is a powerful, modern wiki engine built on Node.js with a beautiful interface, full-text search, and extensive customization options.
-icon: https://raw.githubusercontent.com/requarks/wiki/main/assets/svg/logo.svg
+icon: https://raw.githubusercontent.com/requarks/wiki/main/client/static/favicons/android-chrome-256x256.png
 category: wiki
 tags:
   - wiki

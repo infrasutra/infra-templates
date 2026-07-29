@@ -2,7 +2,7 @@ version: "1"
 
 name: hasura
 description: Hasura is an instant GraphQL and REST API engine on top of PostgreSQL. It auto-generates a production-ready API with fine-grained access control, real-time subscriptions, and event triggers.
-icon: https://hasura.io/brand-assets/hasura-logo-primary-darkbg.svg
+icon: https://avatars.githubusercontent.com/u/13966722?s=200&v=4
 category: developer-tools
 tags:
   - graphql

@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: db2
 description: IBM Db2 is an enterprise-grade relational database management system known for its scalability, reliability, and advanced analytics capabilities.
-icon: https://www.ibm.com/content/dam/adobe-cms/instana/media_logo/Db2.png
+icon: https://avatars.githubusercontent.com/u/1459110?s=200&v=4
 category: database
 tags:
   - database

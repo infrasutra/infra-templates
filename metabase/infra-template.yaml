@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: metabase
 description: Metabase is an open-source business intelligence tool that lets anyone in your organization ask questions and learn from data with beautiful dashboards.
-icon: https://raw.githubusercontent.com/metabase/metabase/master/frontend/src/metabase/static-viz/icon.svg
+icon: https://raw.githubusercontent.com/metabase/metabase/master/docs/images/metabase-logo.svg
 category: analytics
 tags:
   - analytics

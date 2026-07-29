@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: plane
 description: Plane is an open-source project management tool offering issue tracking, sprints, cycles, and modules as a Jira alternative.
-icon: https://raw.githubusercontent.com/makeplane/plane/master/web/public/plane-logo.svg
+icon: https://avatars.githubusercontent.com/u/115727700?s=200&v=4
 category: project
 tags:
   - project-management

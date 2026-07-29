@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: timescaledb
 description: TimescaleDB is an open-source time-series database built on PostgreSQL, combining the reliability of SQL with optimizations for time-series data.
-icon: https://assets.timescale.com/docs/images/timescale-logo-light.svg
+icon: https://avatars.githubusercontent.com/u/8986001?s=200&v=4
 category: time-series
 tags:
   - database

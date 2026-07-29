@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: kafka
 description: Apache Kafka is a distributed event streaming platform for high-throughput, fault-tolerant, real-time data pipelines and streaming applications.
-icon: https://raw.githubusercontent.com/apache/kafka/trunk/docs/images/logo.svg
+icon: https://kafka.apache.org/logos/kafka_logo--simple.png
 category: messaging
 tags:
   - messaging

@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: sonarqube
 description: SonarQube is a leading code quality and security analysis platform that continuously inspects code to detect bugs, vulnerabilities, and code smells.
-icon: https://raw.githubusercontent.com/SonarSource/sonarqube/master/server/sonar-web/public/favicon.ico
+icon: https://avatars.githubusercontent.com/u/545988?s=200&v=4
 category: devops
 tags:
   - code-quality

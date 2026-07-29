@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: couchbase
 description: Couchbase is a distributed NoSQL cloud database that delivers unmatched versatility, performance, scalability, and financial value for modern applications.
-icon: https://www.couchbase.com/wp-content/uploads/2022/08/couchbase-logo.svg
+icon: https://avatars.githubusercontent.com/u/605755?s=200&v=4
 category: database
 tags:
   - database
