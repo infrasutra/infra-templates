@@ -27,11 +27,16 @@ services:
     ports:
       - port: 3000
     env:
+      # Outline rejects anything that is not hexadecimal here, and `password`
+      # is alphanumeric (and defaulted to 16 chars, half the required length),
+      # so this shipped a key the app could never accept.
       - key: SECRET_KEY
-        generator: password
+        generator: hex
+        length: 32
         description: Secret key for encryption (min 32 chars hex)
       - key: UTILS_SECRET
-        generator: password
+        generator: hex
+        length: 32
         description: Utility secret key (min 32 chars hex)
       - key: DATABASE_URL
         configurable: true
