@@ -51,7 +51,15 @@ services:
         size: 128
     health_check:
       type: http
-      path: /
+      # NOT "/": Stirling-PDF answers 401 there because the UI requires a login,
+      # and Kubernetes only counts 2xx/3xx as a passing probe — so this probe
+      # could never succeed, however generous the timings. The app was healthy
+      # the whole time it was being reported as failing to start.
+      # Measured in-cluster against stirlingtools/stirling-pdf:latest:
+      #   /                -> 401
+      #   /login           -> 200
+      #   /actuator/health -> 200   (Spring Boot actuator — the real endpoint)
+      path: /actuator/health
       port: 8080
       initial_delay: 150
       interval: 30
@@ -66,5 +74,5 @@ services:
       tls:
         mode: terminate
       gateway:
-        name: dms-gateway
-        namespace: dms-system
+        name: infrasutra-gateway
+        namespace: infrasutra-system

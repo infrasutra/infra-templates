@@ -83,8 +83,8 @@ services:
       tls:
         mode: terminate
       gateway:
-        name: dms-gateway
-        namespace: dms-system
+        name: infrasutra-gateway
+        namespace: infrasutra-system
 
   - name: harbor-registry
     type: worker

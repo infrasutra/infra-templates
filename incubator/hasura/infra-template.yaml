@@ -53,8 +53,8 @@ services:
       tls:
         mode: terminate
       gateway:
-        name: dms-gateway
-        namespace: dms-system
+        name: infrasutra-gateway
+        namespace: infrasutra-system
 
   - name: hasura
     type: worker
@@ -96,5 +96,5 @@ services:
       tls:
         mode: terminate
       gateway:
-        name: dms-gateway
-        namespace: dms-system
+        name: infrasutra-gateway
+        namespace: infrasutra-system

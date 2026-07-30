@@ -31,7 +31,11 @@ services:
         configurable: true
         description: Public URL of the Plausible instance
       - key: SECRET_KEY_BASE
-        generator: password
+        # generator: password defaults to 16 characters, so this shipped a key a
+        # quarter of the length its own description demands and Plausible refused
+        # to boot: "SECRET_KEY_BASE must be at least 32 bytes long".
+        generator: secret
+        length: 64
         description: Secret key for signing (min 64 chars)
       - key: DATABASE_URL
         configurable: true
@@ -68,5 +72,5 @@ services:
       tls:
         mode: terminate
       gateway:
-        name: dms-gateway
-        namespace: dms-system
+        name: infrasutra-gateway
+        namespace: infrasutra-system
