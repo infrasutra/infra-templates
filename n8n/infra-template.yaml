@@ -20,6 +20,42 @@ defaultVersion: "2.28.2"
 
 # Service definitions
 services:
+  - name: n8n-db
+    type: worker
+    image: "postgres:17-alpine"
+    ports:
+      - port: 5432
+    env:
+      - key: POSTGRES_DB
+        value: n8n
+        description: Database created for n8n on first boot.
+      - key: POSTGRES_USER
+        value: n8n
+        description: Application database user.
+      - key: POSTGRES_PASSWORD
+        generator: password
+        length: 32
+        description: Generated password for the n8n database user.
+      - key: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+        description: A subdirectory of the mount, so initdb does not trip over lost+found.
+    volumes:
+      - name: n8n-db-data
+        path: /var/lib/postgresql/data
+        size: 5120
+    health_check:
+      type: exec
+      command:
+        - pg_isready
+        - "-U"
+        - n8n
+      initial_delay: 10
+      interval: 10
+      timeout: 5
+      retries: 5
+    cpu: 200
+    memory: 512
+
   - name: n8n
     type: web
     image: "n8nio/n8n:${VERSION}"
@@ -44,23 +80,21 @@ services:
         value: postgresdb
         description: Database type
       - key: DB_POSTGRESDB_HOST
-        configurable: true
-        description: PostgreSQL host
+        value: "n8n-db"
+        description: The bundled PostgreSQL service, reachable by service name.
       - key: DB_POSTGRESDB_PORT
         default: "5432"
         configurable: true
         description: PostgreSQL port
       - key: DB_POSTGRESDB_DATABASE
-        default: n8n
-        configurable: true
-        description: Database name
+        from: n8n-db.POSTGRES_DB
+        description: Taken from the bundled database service.
       - key: DB_POSTGRESDB_USER
-        default: n8n
-        configurable: true
-        description: Database username
+        from: n8n-db.POSTGRES_USER
+        description: Taken from the bundled database service.
       - key: DB_POSTGRESDB_PASSWORD
-        generator: password
-        description: Database password
+        from: n8n-db.POSTGRES_PASSWORD
+        description: Taken from the bundled database service.
       - key: N8N_HOST
         default: "localhost"
         configurable: true

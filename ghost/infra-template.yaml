@@ -20,6 +20,42 @@ defaultVersion: "5"
 
 # Service definitions
 services:
+  - name: ghost-db
+    type: worker
+    image: "mariadb:11"
+    ports:
+      - port: 3306
+    env:
+      - key: MARIADB_DATABASE
+        value: ghost
+        description: Database created for ghost on first boot.
+      - key: MARIADB_USER
+        value: ghost
+        description: Application database user.
+      - key: MARIADB_PASSWORD
+        generator: password
+        length: 32
+        description: Generated password for the ghost database user.
+      - key: MARIADB_ROOT_PASSWORD
+        generator: password
+        length: 32
+        description: Generated MariaDB root password.
+    volumes:
+      - name: ghost-db-data
+        path: /var/lib/mysql
+        size: 5120
+    health_check:
+      type: exec
+      command:
+        - healthcheck.sh
+        - "--connect"
+      initial_delay: 20
+      interval: 10
+      timeout: 5
+      retries: 5
+    cpu: 200
+    memory: 512
+
   - name: ghost
     type: web
     image: "ghost:${VERSION}"
@@ -27,30 +63,27 @@ services:
       - port: 2368
     env:
       - key: url
-        default: "http://localhost:2368"
-        configurable: true
-        description: Public URL of the Ghost site
+        value: "${PUBLIC_URL}"
+        description: Public address of this site; the platform fills in the hostname it assigns.
       - key: database__client
         value: mysql
         description: Database client type
       - key: database__connection__host
-        configurable: true
-        description: MySQL/MariaDB host
+        value: "ghost-db"
+        description: The bundled MariaDB service, reachable by service name.
       - key: database__connection__port
         default: "3306"
         configurable: true
         description: MySQL/MariaDB port
       - key: database__connection__user
-        default: ghost
-        configurable: true
-        description: Database username
+        from: ghost-db.MARIADB_USER
+        description: Taken from the bundled database service.
       - key: database__connection__password
-        generator: password
-        description: Database password
+        from: ghost-db.MARIADB_PASSWORD
+        description: Taken from the bundled database service.
       - key: database__connection__database
-        default: ghost
-        configurable: true
-        description: Database name
+        from: ghost-db.MARIADB_DATABASE
+        description: Taken from the bundled database service.
       - key: mail__transport
         default: "Direct"
         configurable: true

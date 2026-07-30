@@ -21,6 +21,41 @@ defaultVersion: "28"
 
 # Service definitions
 services:
+  - name: nextcloud-db
+    type: worker
+    image: "postgres:17-alpine"
+    ports:
+      - port: 5432
+    env:
+      - key: POSTGRES_DB
+        from: nextcloud-db.POSTGRES_DB
+        description: Taken from the bundled database service.
+      - key: POSTGRES_USER
+        from: nextcloud-db.POSTGRES_USER
+        description: Taken from the bundled database service.
+      - key: POSTGRES_PASSWORD
+        from: nextcloud-db.POSTGRES_PASSWORD
+        description: Taken from the bundled database service.
+      - key: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+        description: A subdirectory of the mount, so initdb does not trip over lost+found.
+    volumes:
+      - name: nextcloud-db-data
+        path: /var/lib/postgresql/data
+        size: 5120
+    health_check:
+      type: exec
+      command:
+        - pg_isready
+        - "-U"
+        - nextcloud
+      initial_delay: 10
+      interval: 10
+      timeout: 5
+      retries: 5
+    cpu: 200
+    memory: 512
+
   - name: nextcloud
     type: web
     image: "nextcloud:${VERSION}"
@@ -28,8 +63,8 @@ services:
       - port: 80
     env:
       - key: POSTGRES_HOST
-        configurable: true
-        description: PostgreSQL host
+        value: "nextcloud-db"
+        description: The bundled PostgreSQL service, reachable by service name.
       - key: POSTGRES_DB
         default: nextcloud
         configurable: true

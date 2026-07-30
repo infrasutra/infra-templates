@@ -53,12 +53,12 @@ services:
       type: http
       path: /
       port: 8080
-      initial_delay: 30
+      initial_delay: 150
       interval: 30
       timeout: 10
-      retries: 3
+      retries: 5
     cpu: 200
-    memory: 512
+    memory: 1024
     tcp_exposure:
       enabled: false
       hostname: "${NAME}-${STAGE}.${DOMAIN}"

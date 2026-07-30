@@ -34,23 +34,6 @@ services:
       - key: GF_SECURITY_ADMIN_PASSWORD
         generator: password
         description: Admin password
-      - key: GF_DATABASE_TYPE
-        value: postgres
-        description: Database type
-      - key: GF_DATABASE_HOST
-        configurable: true
-        description: PostgreSQL host and port
-      - key: GF_DATABASE_NAME
-        default: grafana
-        configurable: true
-        description: Database name
-      - key: GF_DATABASE_USER
-        default: grafana
-        configurable: true
-        description: Database username
-      - key: GF_DATABASE_PASSWORD
-        generator: password
-        description: Database password
       - key: GF_INSTALL_PLUGINS
         default: ""
         configurable: true

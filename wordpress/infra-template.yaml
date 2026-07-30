@@ -21,6 +21,42 @@ defaultVersion: "6.4"
 
 # Service definitions
 services:
+  - name: wordpress-db
+    type: worker
+    image: "mariadb:11"
+    ports:
+      - port: 3306
+    env:
+      - key: MARIADB_DATABASE
+        value: wordpress
+        description: Database created for WordPress on first boot.
+      - key: MARIADB_USER
+        value: wordpress
+        description: Application database user.
+      - key: MARIADB_PASSWORD
+        generator: password
+        length: 32
+        description: Generated password for the WordPress database user.
+      - key: MARIADB_ROOT_PASSWORD
+        generator: password
+        length: 32
+        description: Generated MariaDB root password.
+    volumes:
+      - name: wordpress-db-data
+        path: /var/lib/mysql
+        size: 5120
+    health_check:
+      type: exec
+      command:
+        - healthcheck.sh
+        - "--connect"
+      initial_delay: 20
+      interval: 10
+      timeout: 5
+      retries: 5
+    cpu: 200
+    memory: 512
+
   - name: wordpress
     type: web
     image: "wordpress:${VERSION}"
@@ -28,19 +64,17 @@ services:
       - port: 80
     env:
       - key: WORDPRESS_DB_HOST
-        configurable: true
-        description: MySQL/MariaDB host and port
+        value: "wordpress-db:3306"
+        description: The bundled MariaDB service, reachable by service name.
       - key: WORDPRESS_DB_USER
-        default: wordpress
-        configurable: true
-        description: Database username
+        from: wordpress-db.MARIADB_USER
+        description: Same user the bundled MariaDB created.
       - key: WORDPRESS_DB_PASSWORD
-        generator: password
-        description: Database password
+        from: wordpress-db.MARIADB_PASSWORD
+        description: The password generated on the bundled MariaDB.
       - key: WORDPRESS_DB_NAME
-        default: wordpress
-        configurable: true
-        description: Database name
+        from: wordpress-db.MARIADB_DATABASE
+        description: The database the bundled MariaDB created.
       - key: WORDPRESS_TABLE_PREFIX
         default: wp_
         configurable: true

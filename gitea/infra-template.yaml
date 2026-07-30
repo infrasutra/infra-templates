@@ -21,6 +21,42 @@ defaultVersion: "1.26"
 
 # Service definitions
 services:
+  - name: gitea-db
+    type: worker
+    image: "postgres:17-alpine"
+    ports:
+      - port: 5432
+    env:
+      - key: POSTGRES_DB
+        value: gitea
+        description: Database created for gitea on first boot.
+      - key: POSTGRES_USER
+        value: gitea
+        description: Application database user.
+      - key: POSTGRES_PASSWORD
+        generator: password
+        length: 32
+        description: Generated password for the gitea database user.
+      - key: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+        description: A subdirectory of the mount, so initdb does not trip over lost+found.
+    volumes:
+      - name: gitea-db-data
+        path: /var/lib/postgresql/data
+        size: 5120
+    health_check:
+      type: exec
+      command:
+        - pg_isready
+        - "-U"
+        - gitea
+      initial_delay: 10
+      interval: 10
+      timeout: 5
+      retries: 5
+    cpu: 200
+    memory: 512
+
   - name: gitea
     type: web
     image: "gitea/gitea:${VERSION}"
@@ -32,19 +68,17 @@ services:
         value: postgres
         description: Database type
       - key: GITEA__database__HOST
-        configurable: true
-        description: PostgreSQL host and port (e.g., postgres:5432)
+        value: "gitea-db:5432"
+        description: The bundled PostgreSQL service, reachable by service name.
       - key: GITEA__database__NAME
-        default: gitea
-        configurable: true
-        description: Database name
+        from: gitea-db.POSTGRES_DB
+        description: Taken from the bundled database service.
       - key: GITEA__database__USER
-        default: gitea
-        configurable: true
-        description: Database username
+        from: gitea-db.POSTGRES_USER
+        description: Taken from the bundled database service.
       - key: GITEA__database__PASSWD
-        generator: password
-        description: Database password
+        from: gitea-db.POSTGRES_PASSWORD
+        description: Taken from the bundled database service.
       - key: GITEA__security__SECRET_KEY
         generator: password
         description: Secret key for encryption

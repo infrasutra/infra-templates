@@ -21,6 +21,42 @@ defaultVersion: "v0.62.3"
 
 # Service definitions
 services:
+  - name: metabase-db
+    type: worker
+    image: "postgres:17-alpine"
+    ports:
+      - port: 5432
+    env:
+      - key: POSTGRES_DB
+        value: metabase
+        description: Database created for metabase on first boot.
+      - key: POSTGRES_USER
+        value: metabase
+        description: Application database user.
+      - key: POSTGRES_PASSWORD
+        generator: password
+        length: 32
+        description: Generated password for the metabase database user.
+      - key: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+        description: A subdirectory of the mount, so initdb does not trip over lost+found.
+    volumes:
+      - name: metabase-db-data
+        path: /var/lib/postgresql/data
+        size: 5120
+    health_check:
+      type: exec
+      command:
+        - pg_isready
+        - "-U"
+        - metabase
+      initial_delay: 10
+      interval: 10
+      timeout: 5
+      retries: 5
+    cpu: 200
+    memory: 512
+
   - name: metabase
     type: web
     image: "metabase/metabase:${VERSION}"
@@ -31,23 +67,21 @@ services:
         value: postgres
         description: Application database type
       - key: MB_DB_HOST
-        configurable: true
-        description: PostgreSQL host
+        value: "metabase-db"
+        description: The bundled PostgreSQL service, reachable by service name.
       - key: MB_DB_PORT
         default: "5432"
         configurable: true
         description: PostgreSQL port
       - key: MB_DB_DBNAME
-        default: metabase
-        configurable: true
-        description: Database name
+        from: metabase-db.POSTGRES_DB
+        description: Taken from the bundled database service.
       - key: MB_DB_USER
-        default: metabase
-        configurable: true
-        description: Database username
+        from: metabase-db.POSTGRES_USER
+        description: Taken from the bundled database service.
       - key: MB_DB_PASS
-        generator: password
-        description: Database password
+        from: metabase-db.POSTGRES_PASSWORD
+        description: Taken from the bundled database service.
       - key: MB_ENCRYPTION_SECRET_KEY
         generator: password
         description: Encryption key for sensitive data
