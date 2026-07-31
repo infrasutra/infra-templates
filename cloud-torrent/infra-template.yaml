@@ -1,0 +1,63 @@
+version: "1"
+
+# Template metadata
+name: cloud-torrent
+description: Cloud Torrent is a self-hosted remote torrent client with a web UI. Torrents are downloaded to the server's own disk and can then be retrieved over HTTP.
+icon: https://avatars.githubusercontent.com/u/633843?s=200&v=4
+category: media
+tags:
+  - torrent
+  - downloader
+  - self-hosted
+  - file-transfer
+
+# Supported versions
+# The upstream project is archived and publishes only :latest on Docker Hub, so
+# there is no version line to pin to. Recorded here rather than inventing tags
+# that do not exist — a nonexistent tag fails as "image pull failed" and reads
+# like a platform fault.
+versions:
+  - "latest"
+defaultVersion: "latest"
+
+# Service definitions
+services:
+  - name: cloud-torrent
+    type: web
+    image: "jpillora/cloud-torrent:${VERSION}"
+    ports:
+      - port: 3000
+    env:
+      - key: TITLE
+        default: "Cloud Torrent"
+        configurable: true
+        description: Title shown in the web interface
+    volumes:
+      # The binary's working directory is /, and it writes downloads to
+      # ./downloads — verified by running the image and listing the path, not
+      # inferred from the docs. Without this volume every download is lost on
+      # restart, which for a downloader is the whole point of the service.
+      - name: cloud-torrent-downloads
+        path: /downloads
+        size: 204800 # 200 GiB, in MiB like every other template
+    health_check:
+      type: http
+      # Verified: the image runs with no arguments, listens on 0.0.0.0:3000 and
+      # answers 200 on / immediately.
+      path: /
+      port: 3000
+      initial_delay: 10
+      interval: 30
+      timeout: 10
+      retries: 3
+    cpu: 500
+    memory: 1024
+    tcp_exposure:
+      enabled: false
+      hostname: "${NAME}-${STAGE}.${DOMAIN}"
+      port: 3000
+      tls:
+        mode: terminate
+      gateway:
+        name: infrasutra-gateway
+        namespace: infrasutra-system
