@@ -28,14 +28,14 @@ services:
       - port: 5432
     env:
       - key: POSTGRES_DB
-        from: nextcloud-db.POSTGRES_DB
-        description: Taken from the bundled database service.
+        from: nextcloud.POSTGRES_DB
+        description: Taken from the nextcloud service, which owns the value.
       - key: POSTGRES_USER
-        from: nextcloud-db.POSTGRES_USER
-        description: Taken from the bundled database service.
+        from: nextcloud.POSTGRES_USER
+        description: Taken from the nextcloud service, which owns the value.
       - key: POSTGRES_PASSWORD
-        from: nextcloud-db.POSTGRES_PASSWORD
-        description: Taken from the bundled database service.
+        from: nextcloud.POSTGRES_PASSWORD
+        description: Taken from the nextcloud service, which owns the value.
       - key: PGDATA
         value: /var/lib/postgresql/data/pgdata
         description: A subdirectory of the mount, so initdb does not trip over lost+found.
