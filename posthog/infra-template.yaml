@@ -77,9 +77,11 @@ services:
     memory: 512
 
   # ---- ClickHouse: the analytics event store --------------------------------
-  # A mounted config.d fragment defines the single-node `posthog` cluster and
-  # the shard/replica macros that PostHog's `migrate_clickhouse` requires for
-  # its `ON CLUSTER` DDL — without it migrations fail on the first statement.
+  # A mounted config.d fragment supplies what PostHog's `migrate_clickhouse`
+  # (which runs replicated=True) needs on a single node: the `posthog` and
+  # `posthog_migrations` clusters, the shard/replica macros, and an embedded
+  # ClickHouse Keeper so ReplicatedMergeTree tables have coordination. Without
+  # it migrations fail with CLUSTER_DOESNT_EXIST on the first ON CLUSTER DDL.
   - name: posthog-clickhouse
     type: worker
     image: "clickhouse/clickhouse-server:24.8"
@@ -93,8 +95,8 @@ services:
     files:
       - path: /etc/clickhouse-server/config.d/posthog-cluster.xml
         mode: 0444
-        description: Defines the single-node posthog cluster + macros for PostHog migrations.
-        content: "PGNsaWNraG91c2U+CiAgICA8cmVtb3RlX3NlcnZlcnM+CiAgICAgICAgPHBvc3Rob2c+CiAgICAgICAgICAgIDxzaGFyZD4KICAgICAgICAgICAgICAgIDxpbnRlcm5hbF9yZXBsaWNhdGlvbj5mYWxzZTwvaW50ZXJuYWxfcmVwbGljYXRpb24+CiAgICAgICAgICAgICAgICA8cmVwbGljYT4KICAgICAgICAgICAgICAgICAgICA8aG9zdD5wb3N0aG9nLWNsaWNraG91c2U8L2hvc3Q+CiAgICAgICAgICAgICAgICAgICAgPHBvcnQ+OTAwMDwvcG9ydD4KICAgICAgICAgICAgICAgIDwvcmVwbGljYT4KICAgICAgICAgICAgPC9zaGFyZD4KICAgICAgICA8L3Bvc3Rob2c+CiAgICA8L3JlbW90ZV9zZXJ2ZXJzPgogICAgPG1hY3Jvcz4KICAgICAgICA8c2hhcmQ+MDE8L3NoYXJkPgogICAgICAgIDxyZXBsaWNhPjAxPC9yZXBsaWNhPgogICAgICAgIDxjbHVzdGVyPnBvc3Rob2c8L2NsdXN0ZXI+CiAgICA8L21hY3Jvcz4KPC9jbGlja2hvdXNlPgo="
+        description: posthog + posthog_migrations clusters, macros, and embedded Keeper for PostHog's replicated ClickHouse migrations.
+        content: "PGNsaWNraG91c2U+CiAgICA8cmVtb3RlX3NlcnZlcnM+CiAgICAgICAgPHBvc3Rob2c+CiAgICAgICAgICAgIDxzaGFyZD4KICAgICAgICAgICAgICAgIDxpbnRlcm5hbF9yZXBsaWNhdGlvbj50cnVlPC9pbnRlcm5hbF9yZXBsaWNhdGlvbj4KICAgICAgICAgICAgICAgIDxyZXBsaWNhPjxob3N0PmxvY2FsaG9zdDwvaG9zdD48cG9ydD45MDAwPC9wb3J0PjwvcmVwbGljYT4KICAgICAgICAgICAgPC9zaGFyZD4KICAgICAgICA8L3Bvc3Rob2c+CiAgICAgICAgPHBvc3Rob2dfbWlncmF0aW9ucz4KICAgICAgICAgICAgPHNoYXJkPgogICAgICAgICAgICAgICAgPGludGVybmFsX3JlcGxpY2F0aW9uPnRydWU8L2ludGVybmFsX3JlcGxpY2F0aW9uPgogICAgICAgICAgICAgICAgPHJlcGxpY2E+PGhvc3Q+bG9jYWxob3N0PC9ob3N0Pjxwb3J0PjkwMDA8L3BvcnQ+PC9yZXBsaWNhPgogICAgICAgICAgICA8L3NoYXJkPgogICAgICAgIDwvcG9zdGhvZ19taWdyYXRpb25zPgogICAgPC9yZW1vdGVfc2VydmVycz4KICAgIDxtYWNyb3M+CiAgICAgICAgPHNoYXJkPjAxPC9zaGFyZD4KICAgICAgICA8cmVwbGljYT4wMTwvcmVwbGljYT4KICAgIDwvbWFjcm9zPgogICAgPGtlZXBlcl9zZXJ2ZXI+CiAgICAgICAgPHRjcF9wb3J0PjkxODE8L3RjcF9wb3J0PgogICAgICAgIDxzZXJ2ZXJfaWQ+MTwvc2VydmVyX2lkPgogICAgICAgIDxsb2dfc3RvcmFnZV9wYXRoPi92YXIvbGliL2NsaWNraG91c2UvY29vcmRpbmF0aW9uL2xvZzwvbG9nX3N0b3JhZ2VfcGF0aD4KICAgICAgICA8c25hcHNob3Rfc3RvcmFnZV9wYXRoPi92YXIvbGliL2NsaWNraG91c2UvY29vcmRpbmF0aW9uL3NuYXBzaG90czwvc25hcHNob3Rfc3RvcmFnZV9wYXRoPgogICAgICAgIDxjb29yZGluYXRpb25fc2V0dGluZ3M+CiAgICAgICAgICAgIDxvcGVyYXRpb25fdGltZW91dF9tcz4xMDAwMDwvb3BlcmF0aW9uX3RpbWVvdXRfbXM+CiAgICAgICAgICAgIDxzZXNzaW9uX3RpbWVvdXRfbXM+MzAwMDA8L3Nlc3Npb25fdGltZW91dF9tcz4KICAgICAgICA8L2Nvb3JkaW5hdGlvbl9zZXR0aW5ncz4KICAgICAgICA8cmFmdF9jb25maWd1cmF0aW9uPgogICAgICAgICAgICA8c2VydmVyPjxpZD4xPC9pZD48aG9zdG5hbWU+bG9jYWxob3N0PC9ob3N0bmFtZT48cG9ydD45MjM0PC9wb3J0Pjwvc2VydmVyPgogICAgICAgIDwvcmFmdF9jb25maWd1cmF0aW9uPgogICAgPC9rZWVwZXJfc2VydmVyPgogICAgPHpvb2tlZXBlcj4KICAgICAgICA8bm9kZT48aG9zdD5sb2NhbGhvc3Q8L2hvc3Q+PHBvcnQ+OTE4MTwvcG9ydD48L25vZGU+CiAgICA8L3pvb2tlZXBlcj4KICAgIDxkaXN0cmlidXRlZF9kZGw+CiAgICAgICAgPHBhdGg+L2NsaWNraG91c2UvdGFza19xdWV1ZS9kZGw8L3BhdGg+CiAgICA8L2Rpc3RyaWJ1dGVkX2RkbD4KPC9jbGlja2hvdXNlPgo="
     volumes:
       - name: posthog-clickhouse-data
         path: /var/lib/clickhouse
