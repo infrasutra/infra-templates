@@ -1,0 +1,94 @@
+version: "1"
+
+# Template metadata
+name: umami
+description: Umami is a simple, privacy-focused, open-source web analytics alternative to Google Analytics. This bundles its PostgreSQL database so it runs self-contained.
+icon: https://raw.githubusercontent.com/umami-software/umami/master/public/logo.svg
+category: analytics
+tags:
+  - analytics
+  - web-analytics
+  - privacy
+  - google-analytics-alternative
+
+# Supported versions (Umami's PostgreSQL image tags)
+versions:
+  - "postgresql-latest"
+defaultVersion: "postgresql-latest"
+
+# Service definitions
+#
+# Umami is a single web container plus PostgreSQL. The image runs its Prisma
+# schema migrations automatically on startup, so no separate migration step is
+# needed. The database password is a static internal value (the DB is a bundled
+# ClusterIP service, never publicly exposed); APP_SECRET is generated per deploy.
+services:
+  # ---- PostgreSQL: Umami's data store ---------------------------------------
+  - name: umami-db
+    type: worker
+    image: "postgres:15-alpine"
+    ports:
+      - port: 5432
+    env:
+      - key: POSTGRES_DB
+        value: "umami"
+        description: Umami database name.
+      - key: POSTGRES_USER
+        value: "umami"
+        description: Database user.
+      - key: POSTGRES_PASSWORD
+        value: "umami"
+        configurable: true
+        description: Database password (internal bundled service, not publicly exposed).
+      - key: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+        description: A subdirectory of the mount so initdb does not trip over lost+found.
+    volumes:
+      - name: umami-db-data
+        path: /var/lib/postgresql/data
+        size: 10240
+    health_check:
+      type: exec
+      command: ["pg_isready", "-U", "umami"]
+      initial_delay: 10
+      interval: 10
+      timeout: 5
+      retries: 5
+    cpu: 250
+    memory: 512
+
+  # ---- Umami: the analytics web app -----------------------------------------
+  - name: umami
+    type: web
+    image: "ghcr.io/umami-software/umami:${VERSION}"
+    ports:
+      - port: 3000
+    env:
+      - key: DATABASE_TYPE
+        value: "postgresql"
+      - key: DATABASE_URL
+        value: "postgresql://umami:umami@umami-db:5432/umami"
+        description: Connection to the bundled umami-db.
+      - key: APP_SECRET
+        generator: secret
+        length: 64
+        description: Secret used to sign auth tokens.
+    health_check:
+      type: http
+      path: /api/heartbeat
+      port: 3000
+      initial_delay: 30
+      interval: 15
+      timeout: 5
+      retries: 10
+    cpu: 250
+    memory: 512
+    tcp_exposure:
+      enabled: false
+      hostname: "${NAME}-${STAGE}.${DOMAIN}"
+      port: 3000
+      tls:
+        mode: terminate
+      gateway:
+        name: infrasutra-gateway
+        namespace: infrasutra-system
