@@ -1,0 +1,240 @@
+version: "1"
+
+# Template metadata
+name: posthog
+description: PostHog is an open-source product analytics platform providing event tracking, session replay, feature flags, A/B testing, and user surveys. This bundles PostgreSQL, Redis, ClickHouse, and Kafka so it runs self-contained.
+icon: https://avatars.githubusercontent.com/u/60330232?s=200&v=4
+category: analytics
+tags:
+  - analytics
+  - product-analytics
+  - feature-flags
+  - ab-testing
+  - session-replay
+
+# Supported versions
+versions:
+  - "latest"
+defaultVersion: "latest"
+
+# Service definitions
+#
+# PostHog is not a single container: the app needs PostgreSQL (metadata),
+# Redis (cache/queue), ClickHouse (the event store) and a Kafka broker
+# (ingestion). The `posthog/posthog` image's default command `./bin/docker`
+# runs migrations (Postgres + ClickHouse) and then the worker + web server in
+# one container, so no separate migration/worker services are needed.
+services:
+  # ---- PostgreSQL: application metadata -------------------------------------
+  - name: posthog-db
+    type: worker
+    image: "postgres:15-alpine"
+    ports:
+      - port: 5432
+    env:
+      - key: POSTGRES_DB
+        value: "posthog"
+        description: PostHog metadata database.
+      - key: POSTGRES_USER
+        value: "posthog"
+        description: Database user.
+      - key: POSTGRES_PASSWORD
+        value: "posthog"
+        configurable: true
+        description: Database password (internal service, not publicly exposed).
+      - key: PGDATA
+        value: /var/lib/postgresql/data/pgdata
+        description: A subdirectory of the mount so initdb does not trip over lost+found.
+    volumes:
+      - name: posthog-db-data
+        path: /var/lib/postgresql/data
+        size: 10240
+    health_check:
+      type: exec
+      command: ["pg_isready", "-U", "posthog"]
+      initial_delay: 10
+      interval: 10
+      timeout: 5
+      retries: 5
+    cpu: 250
+    memory: 512
+
+  # ---- Redis: cache and Celery broker ---------------------------------------
+  - name: posthog-redis
+    type: worker
+    image: "redis:7-alpine"
+    ports:
+      - port: 6379
+    command: ["redis-server", "--maxmemory-policy", "allkeys-lru", "--maxmemory", "400mb"]
+    health_check:
+      type: exec
+      command: ["redis-cli", "ping"]
+      initial_delay: 5
+      interval: 10
+      timeout: 3
+      retries: 5
+    cpu: 100
+    memory: 512
+
+  # ---- ClickHouse: the analytics event store --------------------------------
+  # A mounted config.d fragment defines the single-node `posthog` cluster and
+  # the shard/replica macros that PostHog's `migrate_clickhouse` requires for
+  # its `ON CLUSTER` DDL — without it migrations fail on the first statement.
+  - name: posthog-clickhouse
+    type: worker
+    image: "clickhouse/clickhouse-server:24.8"
+    ports:
+      - port: 8123
+      - port: 9000
+    env:
+      - key: CLICKHOUSE_SKIP_USER_SETUP
+        value: "1"
+        description: Use the default passwordless user (internal service).
+    files:
+      - path: /etc/clickhouse-server/config.d/posthog-cluster.xml
+        mode: 0444
+        description: Defines the single-node posthog cluster + macros for PostHog migrations.
+        content: "PGNsaWNraG91c2U+CiAgICA8cmVtb3RlX3NlcnZlcnM+CiAgICAgICAgPHBvc3Rob2c+CiAgICAgICAgICAgIDxzaGFyZD4KICAgICAgICAgICAgICAgIDxpbnRlcm5hbF9yZXBsaWNhdGlvbj5mYWxzZTwvaW50ZXJuYWxfcmVwbGljYXRpb24+CiAgICAgICAgICAgICAgICA8cmVwbGljYT4KICAgICAgICAgICAgICAgICAgICA8aG9zdD5wb3N0aG9nLWNsaWNraG91c2U8L2hvc3Q+CiAgICAgICAgICAgICAgICAgICAgPHBvcnQ+OTAwMDwvcG9ydD4KICAgICAgICAgICAgICAgIDwvcmVwbGljYT4KICAgICAgICAgICAgPC9zaGFyZD4KICAgICAgICA8L3Bvc3Rob2c+CiAgICA8L3JlbW90ZV9zZXJ2ZXJzPgogICAgPG1hY3Jvcz4KICAgICAgICA8c2hhcmQ+MDE8L3NoYXJkPgogICAgICAgIDxyZXBsaWNhPjAxPC9yZXBsaWNhPgogICAgICAgIDxjbHVzdGVyPnBvc3Rob2c8L2NsdXN0ZXI+CiAgICA8L21hY3Jvcz4KPC9jbGlja2hvdXNlPgo="
+    volumes:
+      - name: posthog-clickhouse-data
+        path: /var/lib/clickhouse
+        size: 20480
+    health_check:
+      type: http
+      path: /ping
+      port: 8123
+      initial_delay: 20
+      interval: 15
+      timeout: 5
+      retries: 10
+    cpu: 1000
+    memory: 2048
+
+  # ---- Kafka (KRaft, single node, no Zookeeper): event ingestion ------------
+  - name: posthog-kafka
+    type: worker
+    image: "bitnami/kafka:3.7"
+    ports:
+      - port: 9092
+    env:
+      - key: KAFKA_CFG_NODE_ID
+        value: "0"
+      - key: KAFKA_CFG_PROCESS_ROLES
+        value: "controller,broker"
+      - key: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+        value: "0@posthog-kafka:9093"
+      - key: KAFKA_CFG_LISTENERS
+        value: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      - key: KAFKA_CFG_ADVERTISED_LISTENERS
+        value: "PLAINTEXT://posthog-kafka:9092"
+      - key: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+        value: "CONTROLLER"
+      - key: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+        value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      - key: KAFKA_CFG_INTER_BROKER_LISTENER_NAME
+        value: "PLAINTEXT"
+      - key: KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE
+        value: "true"
+      - key: ALLOW_PLAINTEXT_LISTENER
+        value: "yes"
+    volumes:
+      - name: posthog-kafka-data
+        path: /bitnami/kafka
+        size: 10240
+    health_check:
+      type: tcp
+      port: 9092
+      initial_delay: 30
+      interval: 15
+      timeout: 5
+      retries: 10
+    cpu: 500
+    memory: 1024
+
+  # ---- PostHog: all-in-one web + worker + migrations ------------------------
+  - name: posthog
+    type: web
+    image: "posthog/posthog:${VERSION}"
+    ports:
+      - port: 8000
+    env:
+      - key: SECRET_KEY
+        generator: secret
+        length: 64
+        description: Django secret key.
+      - key: DATABASE_URL
+        value: "postgres://posthog:posthog@posthog-db:5432/posthog"
+        description: PostgreSQL connection (bundled posthog-db).
+      - key: PERSONS_DB_WRITER_URL
+        value: "postgres://posthog:posthog@posthog-db:5432/posthog"
+        description: Persons DB writer (same bundled Postgres).
+      - key: PERSONS_DB_READER_URL
+        value: "postgres://posthog:posthog@posthog-db:5432/posthog"
+        description: Persons DB reader (same bundled Postgres).
+      - key: REDIS_URL
+        value: "redis://posthog-redis:6379/"
+        description: Redis connection (bundled posthog-redis).
+      - key: CLICKHOUSE_HOST
+        value: "posthog-clickhouse"
+      - key: CLICKHOUSE_DATABASE
+        value: "posthog"
+      - key: CLICKHOUSE_CLUSTER
+        value: "posthog"
+      - key: CLICKHOUSE_USER
+        value: "default"
+      - key: CLICKHOUSE_SECURE
+        value: "false"
+      - key: CLICKHOUSE_VERIFY
+        value: "false"
+      - key: CLICKHOUSE_REPLICATION
+        value: "false"
+      - key: KAFKA_HOSTS
+        value: "posthog-kafka:9092"
+      - key: KAFKA_URL
+        value: "kafka://posthog-kafka:9092"
+      - key: SITE_URL
+        default: "http://localhost:8000"
+        configurable: true
+        description: Public URL of this PostHog instance — set to your app URL after deploy.
+      - key: DISABLE_SECURE_SSL_REDIRECT
+        value: "true"
+        description: The platform gateway terminates TLS; the app runs plain HTTP behind it.
+      - key: IS_BEHIND_PROXY
+        value: "true"
+      - key: TRUST_ALL_PROXIES
+        value: "true"
+      - key: OBJECT_STORAGE_ENABLED
+        value: "false"
+        description: Session-recording blob storage is off in this bundle (no object store).
+      - key: DEPLOYMENT
+        value: "hobby"
+      - key: OTEL_SDK_DISABLED
+        value: "true"
+      - key: DISABLE_MMDB
+        value: "true"
+        description: Skip the GeoIP database download at boot.
+      - key: SKIP_ASYNC_MIGRATIONS_SETUP
+        value: "1"
+    volumes:
+      - name: posthog-data
+        path: /var/lib/posthog
+        size: 10240
+    health_check:
+      type: http
+      path: /_health
+      port: 8000
+      initial_delay: 180
+      interval: 30
+      timeout: 10
+      retries: 20
+    cpu: 1000
+    memory: 2048
+    tcp_exposure:
+      enabled: false
+      hostname: "${NAME}-${STAGE}.${DOMAIN}"
+      port: 8000
+      tls:
+        mode: terminate
+      gateway:
+        name: infrasutra-gateway
+        namespace: infrasutra-system
