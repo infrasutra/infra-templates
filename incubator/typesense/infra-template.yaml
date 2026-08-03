@@ -46,7 +46,7 @@ services:
       interval: 10
       timeout: 5
       retries: 3
-    cpu: 150
+    cpu: 250
     memory: 512
     tcp_exposure:
       enabled: false

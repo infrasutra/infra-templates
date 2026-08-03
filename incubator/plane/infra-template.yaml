@@ -41,7 +41,7 @@ services:
       interval: 30
       timeout: 10
       retries: 3
-    cpu: 200
+    cpu: 250
     memory: 512
     tcp_exposure:
       enabled: false
@@ -90,7 +90,7 @@ services:
       interval: 30
       timeout: 10
       retries: 3
-    cpu: 300
+    cpu: 500
     memory: 1024
 
   - name: plane-worker
@@ -112,5 +112,5 @@ services:
       - name: plane-uploads
         path: /code/plane/uploads
         size: 6144
-    cpu: 200
+    cpu: 250
     memory: 512

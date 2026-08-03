@@ -92,7 +92,7 @@ services:
       interval: 60
       timeout: 30
       retries: 10
-    cpu: 500
+    cpu: 1000
     memory: 2048
     tcp_exposure:
       enabled: false

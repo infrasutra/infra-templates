@@ -33,7 +33,7 @@ services:
       timeout: 5
       retries: 3
     cpu: 100
-    memory: 128
+    memory: 256
     tcp_exposure:
       enabled: false
       hostname: "${NAME}-${STAGE}.${DOMAIN}"

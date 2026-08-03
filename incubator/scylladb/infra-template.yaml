@@ -42,8 +42,8 @@ services:
       interval: 15
       timeout: 10
       retries: 5
-    cpu: 250
-    memory: 1536
+    cpu: 1000
+    memory: 2048
     tcp_exposure:
       enabled: false
       hostname: "${NAME}-${STAGE}.${DOMAIN}"

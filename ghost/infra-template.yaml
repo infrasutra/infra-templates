@@ -53,7 +53,7 @@ services:
       interval: 10
       timeout: 5
       retries: 5
-    cpu: 200
+    cpu: 250
     memory: 512
 
   - name: ghost
@@ -100,7 +100,7 @@ services:
       interval: 30
       timeout: 10
       retries: 3
-    cpu: 200
+    cpu: 250
     memory: 512
     tcp_exposure:
       enabled: false

@@ -74,7 +74,7 @@ services:
       interval: 30
       timeout: 10
       retries: 5
-    cpu: 500
+    cpu: 1000
     memory: 2048
     tcp_exposure:
       enabled: false
@@ -117,7 +117,7 @@ services:
       - name: sentry-data
         path: /var/lib/sentry/files
         size: 6144
-    cpu: 300
+    cpu: 500
     memory: 1024
 
   - name: sentry-cron
@@ -147,5 +147,5 @@ services:
       - key: SENTRY_REDIS_HOST
         configurable: true
         description: Redis host
-    cpu: 100
+    cpu: 250
     memory: 512

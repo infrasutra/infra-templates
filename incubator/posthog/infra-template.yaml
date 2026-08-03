@@ -73,7 +73,7 @@ services:
       interval: 10
       timeout: 3
       retries: 5
-    cpu: 100
+    cpu: 250
     memory: 512
 
   # ---- ClickHouse: the analytics event store --------------------------------
