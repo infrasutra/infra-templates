@@ -3,7 +3,7 @@ version: "1"
 # Template metadata
 name: umami
 description: Umami is a simple, privacy-focused, open-source web analytics alternative to Google Analytics. This bundles its PostgreSQL database so it runs self-contained.
-icon: https://raw.githubusercontent.com/umami-software/umami/master/public/logo.svg
+icon: https://raw.githubusercontent.com/umami-software/umami/master/public/android-chrome-512x512.png
 category: analytics
 tags:
   - analytics
