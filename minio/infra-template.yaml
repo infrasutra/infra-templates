@@ -22,7 +22,7 @@ defaultVersion: "RELEASE.2025-09-07T16-13-09Z"
 services:
   - name: minio
     type: web
-    image: "minio/minio:${VERSION}"
+    image: "quay.io/minio/minio:${VERSION}"
     command:
       - server
       - /data
