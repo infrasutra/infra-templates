@@ -13,10 +13,9 @@ tags:
 
 # Supported versions
 versions:
-  - "8"
   - "7"
   - "6"
-defaultVersion: "8"
+defaultVersion: "7"
 
 # Service definitions
 services:
